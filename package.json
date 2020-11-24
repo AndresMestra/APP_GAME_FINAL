@@ -1,0 +1,27 @@
+{
+  "name": "app_game_final",
+  "version": "1.0.0",
+  "description": "En el siguiente repositorio se crearán de salas con Socket.\r #Estudiante 1 (Institucional)",
+  "main": "app.js",
+  "bin": {
+    "app_game_final": "Rooms.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^3.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndresMestra/APP_GAME_FINAL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndresMestra/APP_GAME_FINAL/issues"
+  },
+  "homepage": "https://github.com/AndresMestra/APP_GAME_FINAL#readme"
+}
