@@ -14,6 +14,20 @@ io.sockets.on('connect', (socket) => {
     socket.on('setPing', () => { // se activa en el servidor el evento on con nombre setPing enviado desde el cliente
         socket.emit('setPong', 'Esto es un pong'); //enviamos una respuesta al cliente con un nuevo nombre
     });
+    socket.on('newRoom', () => {
+        // se genera un id único
+        var newRoomId = shortid.generate(); //genera un id aleatorio para la sala
+    
+        rooms.push({
+            id: newRoomId, // se agrega la sala al arrglo de salas con el id generado y 
+            players: ['p1', 'p2', 'p3'] // un array vacio para los jugadores de esa sala que se agregaran posteriormente
+        });
+        // se informan los cambios al cliente con el evento setNewRoom
+        socket.emit('setNewRoom', { newRoomId, rooms });
+    })
+    socket.on('getInitRooms', () => { // cargar las salas iniciales activas
+        socket.emit('setInitRooms', rooms)
+    })
 })
 
 //cargar la plantilla html del juego
