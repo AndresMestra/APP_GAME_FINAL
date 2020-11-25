@@ -11,7 +11,7 @@
         <select v-bind="rooms" size="10" v-model="roomSelected" @change="onChangeRoom($event)">
             <option v-for="room  in rooms" :key='room.id' :value="room.id">{{room.id}}</option>
         </select>
-        <br/> v-if="roomSelected != '' ">Sala seleccionada {{roomSelected}} [{{roomActive.players.length}}]</label>
+        <br/> <label v-if="roomSelected != '' ">Sala seleccionada {{roomSelected}} [{{roomActive.players.length}}]</label>
         <ul v-for="(player, i) in roomActive.players" :key="i">
             <li>Jugador {{i+1}}: {{player}}</li>
         </ul>
@@ -25,7 +25,8 @@
                 return {
                     rooms: [],
                     newRoomId: '',
-                    roomSelected: ''
+                    roomSelected: '',
+                    roomActive: []
                 }
             },
             mounted: function() {
@@ -47,12 +48,12 @@
                     this.rooms = data.rooms //actualizamos las salas
                 })
                 // solicitar las salas iniciales activas
-this.socket.emit('getInitRooms'); 
+                this.socket.emit('getInitRooms'); 
 
-// actualizar la variable rooms en el cliente
-this.socket.on('setInitRooms', (rooms) => {
-    this.rooms = rooms //actualizar las rooms en el cliente
-})
+                // actualizar la variable rooms en el cliente
+                this.socket.on('setInitRooms', (rooms) => {
+                    this.rooms = rooms //actualizar las rooms en el cliente
+                })
             },
             methods: {
                 newRoom()  {
