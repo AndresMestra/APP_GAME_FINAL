@@ -58,6 +58,10 @@
             methods: {
                 newRoom()  {
                     this.socket.emit('newRoom');
+                },
+                onChangeRoom(event) {
+                    var idRoomSelected = event.target.value; // obtenemos el id de la sala seleccionada
+                    this.roomActive = this.rooms.filter(room => room.id == idRoomSelected)[0]; // filtramos las salas hasta traer la que coincida con el id
                 }
             }
         });
