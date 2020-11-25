@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const shortid = require('shortid');
-var { rooms } = require('./bin/Rooms');
+var { rooms, newPlayer } = require('./bin/Rooms');
 //Sockets
 io.sockets.on('connect', (socket) => {
     console.log(`Un nuevo usuario con id ${socket.id} se ha conectado`)
@@ -28,6 +28,20 @@ io.sockets.on('connect', (socket) => {
     socket.on('getInitRooms', () => { // cargar las salas iniciales activas
         socket.emit('setInitRooms', rooms)
     })
+    //agregarse a una sala
+    socket.on('joinRoom', (idRoom) => {
+     console.log(`conectado a la sala ${idRoom}`)
+        //adicionamos la sala por su id a las salas del socket
+    socket.join(idRoom);
+    //avisamos a todos los que estan el la sala que hay un usuario nuevo
+    io.sockets.in(idRoom).emit('alertNewUser', `Un nuevo usuario se ha conectado: ${socket.id}`);
+    //capturamos el indice de la sala en el array de salas para modificar solo esa en el cliente
+    var index = rooms.findIndex(room => room.id == idRoom);
+    //agregamos el usuario que solicitó agregarse a la sala en el arreglo de jugadores de la sala
+    rooms[index].players.push(newPlayer(socket.id, idRoom));
+    //informamos al cliente de los cambios
+    socket.emit('setRoomActive', { idRoom, rooms, index });
+})
 })
 
 //cargar la plantilla html del juego

@@ -11,7 +11,11 @@
         <select v-bind="rooms" size="10" v-model="roomSelected" @change="onChangeRoom($event)">
             <option v-for="room  in rooms" :key='room.id' :value="room.id">{{room.id}}</option>
         </select>
-        <br/> <label v-if="roomSelected != '' ">Sala seleccionada {{roomSelected}} [{{roomActive.players.length}}]</label>
+        <!-- <br/> <label v-if="roomSelected != '' ">Sala seleccionada {{roomSelected}} [{{roomActive.players.length}}]</label> -->
+        <div v-if="roomSelected != '' ">
+            <label>Sala seleccionada {{roomSelected}} [{{roomActive.players.length}}]</label>
+            <button @click="joinRoom(roomSelected)">Join room</button>
+        </div>
         <ul v-for="(player, i) in roomActive.players" :key="i">
             <li>Jugador {{i+1}}: {{player}}</li>
         </ul>
@@ -62,6 +66,9 @@
                 onChangeRoom(event) {
                     var idRoomSelected = event.target.value; // obtenemos el id de la sala seleccionada
                     this.roomActive = this.rooms.filter(room => room.id == idRoomSelected)[0]; // filtramos las salas hasta traer la que coincida con el id
+                },
+                joinRoom(idRoom) {
+                  this.socket.emit('joinRoom', idRoom)
                 }
             }
         });
