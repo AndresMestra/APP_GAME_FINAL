@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const shortid = require('shortid');
-
+var { rooms } = require('./bin/Rooms');
 //Sockets
 io.sockets.on('connect', (socket) => {
     console.log(`Un nuevo usuario con id ${socket.id} se ha conectado`)

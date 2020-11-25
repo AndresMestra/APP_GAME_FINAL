@@ -5,6 +5,7 @@
 </head>
 <body>
     <div id="app">
+        <button @click="newRoom">Nueva sala</button> {{newRoomId}}
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -12,7 +13,8 @@
         new Vue({
             el: "#app",
             data() {
-                return {}
+                return {rooms: [],
+        newRoomId: ''}
             },
             mounted: function() {
                 //nos conectamos a un servidor por su ip
@@ -28,10 +30,22 @@
                 this.socket.on('setPong', (msg) => { // recibimos el pong
                     console.log(msg)
                 })
+                this.socket.on('setNewRoom', (data) => {
+    this.newRoomId = data.newRoomId // registramos la nueva sala
+    this.rooms = data.rooms //actualizamos las salas
+})
                 
+})
+this.socket.on('setNewRoom', (data) => {
+    this.newRoomId = data.newRoomId // registramos la nueva sala
+    this.rooms = data.rooms //actualizamos las salas
+})
             },
-            methods: {}
-        });
+            methods: {
+                {newRoom()  {
+        this.socket.emit('newRoom');
+    }
+        },
     </script>
 </body>
 </html>
