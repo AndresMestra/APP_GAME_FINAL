@@ -14,7 +14,22 @@
             data() {
                 return {}
             },
-            mounted: function() {},
+            mounted: function() {
+                //nos conectamos a un servidor por su ip
+                this.socket = io('http://localhost:3000')
+                //recibimos verificacion del servidor alconectarnos
+                this.socket.on('connect', () => {
+                    console.log('Conectado')
+                })
+                setInterval(() => { // función que se repite cada 2000 milésimas de segundos
+                    console.log('Envio un ping')
+                    this.socket.emit('setPing', 'ping'); // enviamos el ping
+                }, 2000);
+                this.socket.on('setPong', (msg) => { // recibimos el pong
+                    console.log(msg)
+                })
+                
+            },
             methods: {}
         });
     </script>
