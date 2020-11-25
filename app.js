@@ -1,5 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+const shortid = require('shortid');
 
 //Sockets
 io.sockets.on('connect', (socket) => {
